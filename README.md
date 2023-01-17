@@ -94,4 +94,5 @@ export default App;
 I use this component extensively in my projects, and I thought it would be a good idea to share it with the community.
 
 This component was inspired from [Mike Talbot's work](https://github.com/miketalbot). Thanks Mike!
+
 Enjoy!
