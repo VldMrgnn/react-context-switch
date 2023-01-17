@@ -3,8 +3,8 @@
   "version": "0.0.4",
   "description": "Simple conditional react  render switch using context",
   "repository": "https://github.com/VldMrgnn/react-switch",
-  "main": "./dist/index.js",
-  "types": "./dist/index.d.ts",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "scripts": {
     "clean": "rm -rf dist",
     "build": "npm run clean && tsc && cp package.json README.md ./dist",

@@ -10,5 +10,11 @@
     "skipLibCheck": true,  
     "moduleResolution": "node"
   },
-  "include": ["src"]
+  "include": [
+    "./src/**/*.tsx",
+    "./src/**/*.ts"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
 }
