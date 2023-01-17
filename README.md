@@ -1,4 +1,3 @@
-
 # React Conditional Render SwitchCase using Context
 
 ## Description
@@ -18,29 +17,29 @@ npm install react-context-switch
 
 ## Usage
 
-```Switch value ={condition}``` - the value to be evaluated
+`Switch value ={condition}` - the value to be evaluated
 
-```Case when ={value to meet the condition}``` - render if the condition is met
+`Case when ={value to meet the condition}` - render if the condition is met
 
-```Case when = {[function to meet the condition]}``` - render if the condition is met
+`Case when = {[function to meet the condition]}` - render if the condition is met
 
-```CaseElse``` - render if no condition is met
+`CaseElse` - render if no condition is met
 
 ### An example
 
 ```jsx
-import React from 'react';
-import { Switch, Case, CaseElse } from 'react-context-switch';
-import './App.css';
+import React from "react";
+import { Switch, Case, CaseElse } from "react-context-switch";
+import "./App.css";
 
 function NearFutureComponent() {
-  return <div>{'The Near Future is here!'}</div>;
+  return <div>{"The Near Future is here!"}</div>;
 }
 function FutureComponent() {
-  return <div>{'The Future is here!'}</div>;
+  return <div>{"The Future is here!"}</div>;
 }
 function DistantFutureComponent() {
-  return <div>{'The Distant Future is here!'}</div>;
+  return <div>{"The Distant Future is here!"}</div>;
 }
 
 function App() {
@@ -71,7 +70,7 @@ function App() {
                 {/* as a value */}
                 <NearFutureComponent />
               </Case>
-              <Case when={(x:number)=> [21,22].includes(x)}>
+              <Case when={(x: number) => [21, 22].includes(x)}>
                 {/* as a function */}
                 <FutureComponent />
               </Case>
@@ -88,7 +87,24 @@ function App() {
 }
 
 export default App;
+```
 
+Another example, just to show how it can be used in real code:
+
+```jsx
+<Switch value={true}>
+  <Case
+    when={[() => defaultConditions && list.name.startsWith("DEFAULT_PICKER")]}
+  >
+    <DefaultCriteria />
+  </Case>
+  <Case when={[() => options.includes("YEAR_PICKER")]}>
+    <Calendar />
+  </Case>
+  <Case when={[() => options.includes("SHOW_BOOKMARK")]}>
+    <i className="dx-icon-bookmark" />
+  </Case>
+</Switch>
 ```
 
 I use this component extensively in my projects, and I thought it would be a good idea to share it with the community.
