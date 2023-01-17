@@ -1,6 +1,6 @@
 {
   "name": "react-context-switch",
-  "version": "1.0.0",
+  "version": "0.0.3",
   "description": "Simple conditional react  render switch using context",
   "repository": "https://github.com/VldMrgnn/react-switch",
   "main": "index.tsx",
@@ -8,7 +8,16 @@
     "test": "tsc --noEmit && ava",
     "format": "prettier --write **/*.tsx",
     "build": "tsc",
-    "clean": "tsc --build --clean"
+    "clean": "tsc --build --clean",
+    "prepublishOnly": "npm run clean && npm run build",
+    "publish:beta": "npm publish --tag=next",
+    "publish": "npm run clean && npm run build && npm publish"
+
+  },
+  "exports":{
+    ".": {
+      "default": "./dist/index.js"
+    }
   },
   "keywords": [
     "react",
@@ -18,27 +27,6 @@
   ],
   "author": "Vlad Marginean",
   "license": "ISC",
-  "exports": {
-    "./package.json": "./package.json",
-    ".": {
-      "types": "./dist/index.d.ts",
-      "default": "./dist/index.js"
-    },
-    "./react": {
-      "types": "./dist/react.d.ts",
-      "default": "./dist/react.js"
-    }
-  },
-  "typesVersions": {
-    "*": {
-      "*": [
-        "dist/index.d.ts"
-      ],
-      "react": [
-        "dist/react.d.ts"
-      ]
-    }
-  },
   "devDependencies": {
     "@testing-library/react": "^13.4.0",
     "@types/react": "^18.0.26",
