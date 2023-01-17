@@ -8,6 +8,8 @@ It's also memory friendly, and it doesn't create any unnecessary re-render.
 
 It solves a lot of messy code that can be created when using the traditional conditional rendering.
 
+The usage of context api is under the hood, and it is not exposed directly to the user.
+
 ## Installation
 
 ```bash
