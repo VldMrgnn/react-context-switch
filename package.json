@@ -1,23 +1,15 @@
 {
   "name": "react-context-switch",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "Simple conditional react  render switch using context",
   "repository": "https://github.com/VldMrgnn/react-switch",
-  "main": "index.tsx",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
   "scripts": {
-    "test": "tsc --noEmit && ava",
-    "format": "prettier --write **/*.tsx",
-    "build": "tsc",
-    "clean": "tsc --build --clean",
-    "prepublishOnly": "npm run clean && npm run build",
-    "publish:beta": "npm publish --tag=next",
-    "publish": "npm run clean && npm run build && npm publish"
-
-  },
-  "exports":{
-    ".": {
-      "default": "./dist/index.js"
-    }
+    "clean": "rm -rf dist",
+    "build": "npm run clean && tsc && cp package.json README.md ./dist",
+    "format": "prettier --write \"**/*.{ts,tsx}\"",
+    "fprepare": "npm run format && npm run build"
   },
   "keywords": [
     "react",
