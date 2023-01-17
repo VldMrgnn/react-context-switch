@@ -1,8 +1,11 @@
 {
   "name": "react-context-switch",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "description": "Simple conditional react render switch using context",
-  "repository": "https://github.com/VldMrgnn/react-switch",
+  "repository": "https://github.com/VldMrgnn/react-context-switch.git",
+  "author": "Vlad Marginean <vladmarginean@softwiz.ro>",
+  "license": "ISC",
+  "private": false,
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
@@ -17,8 +20,6 @@
     "switch",
     "conditional"
   ],
-  "author": "Vlad Marginean",
-  "license": "ISC",
   "devDependencies": {
     "@testing-library/react": "^13.4.0",
     "@types/react": "^18.0.26",
