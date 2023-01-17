@@ -1,0 +1,10 @@
+*.swp
+*.log
+.DS_Store
+node_modules
+dist
+*.bak
+.envrc
+.direnv/
+yarn.lock
+package-lock.json

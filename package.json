@@ -1,0 +1,17 @@
+{
+  "name": "react-switch-case",
+  "version": "1.0.0",
+  "description": "Simple conditional react  render switch using context",
+  "main": "index.js",
+  "scripts": {
+    "test": "tsc --noEmit && ava"
+  },
+  "keywords": [
+    "react",
+    "render",
+    "switch",
+    "conditional"
+  ],
+  "author": "Vlad Marginean",
+  "license": "ISC"
+}
