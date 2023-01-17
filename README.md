@@ -89,7 +89,7 @@ function App() {
 export default App;
 ```
 
-Another example, just to show how it can be used in real code:
+Another example:
 
 ```jsx
 <Switch value={true}>

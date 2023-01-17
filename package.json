@@ -1,18 +1,25 @@
 {
   "name": "react-context-switch",
-  "version": "0.0.8",
+  "version": "0.0.10",
   "description": "Simple conditional react render switch using context",
   "repository": "https://github.com/VldMrgnn/react-context-switch.git",
   "author": "Vlad Marginean <vladmarginean@softwiz.ro>",
   "license": "ISC",
   "private": false,
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "main": "./dist/cjs/index.js",
+  "module": "./dist/esm/index.js",
+  "types": "./dist/esm/index.d.ts",
   "scripts": {
     "clean": "rm -rf dist",
-    "build": "npm run clean && tsc && cp package.json README.md ./dist",
     "format": "prettier --write \"**/*.{ts,tsx}\"",
-    "fprepare": "npm run format && npm run build"
+    "fprepare": "npm run format && npm run build",
+    "lint": "eslint \"**/*.{js,jsx,ts,tsx}\"",
+    "test": "jest --config jestconfig.json",
+    "prepare": "npm run build",
+    "prepublishOnly": "npm run clean && npm test && npm run format && npm run lint",
+    "build": "npm run build:esm && npm run build:cjs && cp package.json README.md ./dist",
+    "build:esm": "tsc",
+    "build:cjs": "tsc --module commonjs --outDir dist/cjs"
   },
   "keywords": [
     "react",
@@ -22,10 +29,20 @@
   ],
   "devDependencies": {
     "@testing-library/react": "^13.4.0",
+    "@types/jest": "^29.2.5",
     "@types/react": "^18.0.26",
+    "@typescript-eslint/eslint-plugin": "^5.48.2",
+    "@typescript-eslint/parser": "^5.48.2",
+    "eslint": "^8.32.0",
+    "eslint-plugin-react": "^7.32.1",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "jest": "^29.3.1",
+    "jest-canvas-mock": "^2.4.0",
+    "jest-environment-jsdom": "^29.3.1",
     "prettier": "^2.8.3",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "ts-jest": "^29.0.5",
     "typescript": "^4.9.4"
   },
   "dependencies": {
