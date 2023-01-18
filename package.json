@@ -19,7 +19,8 @@
     "prepublishOnly": "npm run clean && npm test && npm run format && npm run lint",
     "build": "npm run build:esm && npm run build:cjs && cp package.json README.md ./dist",
     "build:esm": "tsc",
-    "build:cjs": "tsc --module commonjs --outDir dist/cjs"
+    "build:cjs": "tsc --module commonjs --outDir dist/cjs",
+    "workflow": "jest --forceExit --detectOpenHandles"
   },
   "keywords": [
     "react",
