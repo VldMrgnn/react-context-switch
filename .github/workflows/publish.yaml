@@ -20,8 +20,6 @@ jobs:
         run: NODE_ENV=production yarn build
       - name: test
         run: yarn test
-      - name: version
-        run: yarn version --new-version ${RELEASE_VERSION/v}
       - name: publish
         run: yarn publish --access public
         env:
