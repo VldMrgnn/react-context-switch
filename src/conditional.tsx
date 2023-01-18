@@ -5,7 +5,7 @@ const SwitchContext = React.createContext<any>(undefined);
 const ensureArray = (ar: unknown) =>
   Array.isArray(ar) ? ar : [ar].filter((f) => f !== undefined);
 
-//@typescript-eslint/no-empty-function
+// eslint-disable-next-line @typescript-eslint/no-empty-function
 const noop = () => {};
 
 export function Switch({

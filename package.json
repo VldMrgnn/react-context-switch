@@ -1,6 +1,6 @@
 {
   "name": "react-context-switch",
-  "version": "v.0.0.23",
+  "version": "v.0.0.24",
   "description": "Simple conditional react render switch using context",
   "repository": "https://github.com/VldMrgnn/react-context-switch.git",
   "author": "Vlad Marginean <vladmarginean@softwiz.ro>",
@@ -35,6 +35,7 @@
     "@typescript-eslint/eslint-plugin": "^5.48.2",
     "@typescript-eslint/parser": "^5.48.2",
     "eslint": "^8.32.0",
+    "eslint-config-prettier": "^8.6.0",
     "eslint-plugin-react": "^7.32.1",
     "eslint-plugin-react-hooks": "^4.6.0",
     "husky": "^8.0.0",
