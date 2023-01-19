@@ -6,17 +6,18 @@ The react-context-switch package provides an easy-to-use and memory-friendly way
 
 ```js
 
-<Switch value ={condition}>
-  <Case when ={value to meet the condition}>
+<Switch value={expression to be evaluated}>
+  <Case when={expression or value to strictly equal the switch value}>
     <Component to render if the condition is met>
   </Case>
-  <Case when = {[function to meet the condition]}>
+  <Case when={[function taking switch value as argument and evaluates to true]}>
     <Component to render if the condition is met>
   </Case>
   <CaseElse>
     <Component to render if no condition is met>
   </CaseElse>
 </Switch>
+
 
 ```
 
@@ -37,16 +38,15 @@ The _Case_ component takes a when prop, which can be either a **value** or a **f
 To evaluate a "when" prop as a value, simply pass the value to the when prop.
 
 ```jsx
-let a=1;
+let a = 1;
 //...
-<Switch value={a-1}>
+<Switch value={a - 1}>
   <Case when={0}>
-	<div>
-	  <p>{'a-1 equals 0'}</p>
-	</div>
+    <div>
+      <p>{"a-1 equals 0"}</p>
+    </div>
   </Case>
-</Switch>
-
+</Switch>;
 ```
 
 To evaluate a "when" prop as a function, pass an array containing the function to the when prop.
@@ -68,7 +68,6 @@ The _CaseElse_ component's children will be rendered if none of the _Case_ compo
 Here is an example of usage:
 
 ```jsx
-
 <Switch value={true}>
   <Case when={[() => options.includes("DEFAULT_CONTROLS")]}>
     <DefaultControls />
@@ -85,7 +84,6 @@ Here is an example of usage:
     <FallbackComponent />
   </CaseElse>
 </Switch>
-
 ```
 
 It is also possible to nest Switch components, allowing for even more powerful and flexible conditional rendering.
