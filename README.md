@@ -137,6 +137,8 @@ function DistantFutureComponent() {
 export default App;
 ```
 
+Please find an example of a complex conditional render on [codesandbox](https://codesandbox.io/s/react-context-switch-an-example-290kxu?file=/src/styles.css)
+
 I use this component extensively in my projects.
 
 This component was inspired from [Mike Talbot's work](https://github.com/miketalbot). Thanks Mike!
