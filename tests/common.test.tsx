@@ -5,7 +5,7 @@ import "jest-canvas-mock";
 
 import { Switch, Case, CaseElse } from "../src";
 
-describe("Common render", () => {
+describe("Startup", () => {
   it("renders without crashing", () => {
     render(
       <div>
@@ -38,6 +38,9 @@ describe("Basic type check", () => {
           <Case when={[(x) => x === 0]}>
             <div>{"a eq 1"}</div>
           </Case>
+          <Case when={[(x:string) => x === 'abracadabra']}>
+            <div>{"what we expect here? normally a typescript error stating that x cannot be a string"}</div>
+          </Case>
           <CaseElse>
             <div>{"a in neither 2 nor 1"}</div>
           </CaseElse>
@@ -48,43 +51,50 @@ describe("Basic type check", () => {
   });
 });
 
-describe("Basic type check 2", () => {
-  it("test", () => {
+describe("Single case short tests", () => {
+  it("test value - string value", () => {
+    const a:string = "a";
+    render(
+      <div>
+        <Switch value={a}>
+          <Case when={'a'}>
+           <div data-testid='test-div'>{"ok"}</div>T
+          </Case>
+        </Switch>
+      </div>
+    );
+    expect(screen.getByTestId('test-div').textContent).toBe("ok");
+  });
+
+  it("test function - string value", () => {
+    const a:string = "a";
+    render(
+      <div>
+        <Switch value={a}>
+          <Case when={[(x) => x === "A".toLowerCase()]}>
+          <div data-testid='test-div'>{"ok"}</div>T
+          </Case>
+        </Switch>
+      </div>
+    );
+    expect(screen.getByTestId('test-div').textContent).toBe("ok");
+  });
+
+  it("test function- expresion array", () => {
     const a = { a: 1 };
     render(
       <div>
         <Switch value={Object.values(a)}>
           <Case when={[(x:number[]) => { return x?.[0] === 1}]}>
-            <div>{"ok"}</div>T
+            <div data-testid='test-div'>{"ok"}</div>T
           </Case>
         </Switch>
       </div>
     );
+    expect(screen.getByTestId('test-div').textContent).toBe("ok");
   });
-  it("test sring primitive", () => {
-    const a = "a";
-    render(
-      <div>
-        <Switch value={a}>
-          <Case when={"a"}>
-            <div>{"ok"}</div>T
-          </Case>
-        </Switch>
-      </div>
-    );
-  });
-  it("test sring function", () => {
-    const a = "a";
-    render(
-      <div>
-        <Switch value={a}>
-          <Case when={[(x) => x === "A".toLowerCase()]}>
-            <div>{"ok"}</div>T
-          </Case>
-        </Switch>
-      </div>
-    );
-  });
+ 
+  
 });
 
 describe("Basic type check", () => {
