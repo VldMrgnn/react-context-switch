@@ -35,7 +35,7 @@ describe("Basic type check", () => {
           <Case when={1}>
             <div>{"a eq 2"}</div>
           </Case>
-          <Case when={[(x: number) => x === 0]}>
+          <Case when={[(x) => x === 0]}>
             <div>{"a eq 1"}</div>
           </Case>
           <CaseElse>
@@ -54,7 +54,7 @@ describe("Basic type check 2", () => {
     render(
       <div>
         <Switch value={Object.values(a)}>
-          <Case when={[(x: number[]) => x?.[0] === 1]}>
+          <Case when={[(x:number[]) => { return x?.[0] === 1}]}>
             <div>{"ok"}</div>T
           </Case>
         </Switch>
@@ -78,7 +78,7 @@ describe("Basic type check 2", () => {
     render(
       <div>
         <Switch value={a}>
-          <Case when={[(x: string) => x === "A".toLowerCase()]}>
+          <Case when={[(x) => x === "A".toLowerCase()]}>
             <div>{"ok"}</div>T
           </Case>
         </Switch>
@@ -93,10 +93,10 @@ describe("Basic type check", () => {
     render(
       <div>
         <Switch value={Object.values(a)}>
-          <Case when={[(x: number[]) => x?.[0] === 1]}>
+          <Case when={[(x:number[]) => x?.[0] === 1]}>
             <div data-testid="thediv">{"this text"}</div>
           </Case>
-          <Case when={[(x: number[]) => x?.[0] !== 1]}>
+          <Case when={[(x:number[]) => x?.[0] !== 1]}>
             <div data-testid="thediv">{"Neah"}</div>
           </Case>
         </Switch>
