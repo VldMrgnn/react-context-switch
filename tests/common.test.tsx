@@ -38,8 +38,12 @@ describe("Basic type check", () => {
           <Case when={[(x) => x === 0]}>
             <div>{"a eq 1"}</div>
           </Case>
-          <Case when={[(x:string) => x === 'abracadabra']}>
-            <div>{"what we expect here? normally a typescript error stating that x cannot be a string"}</div>
+          <Case when={[(x: string) => x === "abracadabra"]}>
+            <div>
+              {
+                "what we expect here? normally a typescript error stating that x cannot be a string"
+              }
+            </div>
           </Case>
           <CaseElse>
             <div>{"a in neither 2 nor 1"}</div>
@@ -53,31 +57,31 @@ describe("Basic type check", () => {
 
 describe("Single case short tests", () => {
   it("test value - string value", () => {
-    const a:string = "a";
+    const a = "a";
     render(
       <div>
         <Switch value={a}>
-          <Case when={'a'}>
-           <div data-testid='test-div'>{"ok"}</div>T
+          <Case when={"a"}>
+            <div data-testid="test-div">{"ok"}</div>T
           </Case>
         </Switch>
       </div>
     );
-    expect(screen.getByTestId('test-div').textContent).toBe("ok");
+    expect(screen.getByTestId("test-div").textContent).toBe("ok");
   });
 
   it("test function - string value", () => {
-    const a:string = "a";
+    const a = "a";
     render(
       <div>
         <Switch value={a}>
           <Case when={[(x) => x === "A".toLowerCase()]}>
-          <div data-testid='test-div'>{"ok"}</div>T
+            <div data-testid="test-div">{"ok"}</div>T
           </Case>
         </Switch>
       </div>
     );
-    expect(screen.getByTestId('test-div').textContent).toBe("ok");
+    expect(screen.getByTestId("test-div").textContent).toBe("ok");
   });
 
   it("test function- expresion array", () => {
@@ -85,16 +89,20 @@ describe("Single case short tests", () => {
     render(
       <div>
         <Switch value={Object.values(a)}>
-          <Case when={[(x:number[]) => { return x?.[0] === 1}]}>
-            <div data-testid='test-div'>{"ok"}</div>T
+          <Case
+            when={[
+              (x: number[]) => {
+                return x?.[0] === 1;
+              },
+            ]}
+          >
+            <div data-testid="test-div">{"ok"}</div>T
           </Case>
         </Switch>
       </div>
     );
-    expect(screen.getByTestId('test-div').textContent).toBe("ok");
+    expect(screen.getByTestId("test-div").textContent).toBe("ok");
   });
- 
-  
 });
 
 describe("Basic type check", () => {
@@ -103,10 +111,10 @@ describe("Basic type check", () => {
     render(
       <div>
         <Switch value={Object.values(a)}>
-          <Case when={[(x:number[]) => x?.[0] === 1]}>
+          <Case when={[(x: number[]) => x?.[0] === 1]}>
             <div data-testid="thediv">{"this text"}</div>
           </Case>
-          <Case when={[(x:number[]) => x?.[0] !== 1]}>
+          <Case when={[(x: number[]) => x?.[0] !== 1]}>
             <div data-testid="thediv">{"Neah"}</div>
           </Case>
         </Switch>

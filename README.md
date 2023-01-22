@@ -2,7 +2,9 @@
 
 ## Description
 
-The react-context-switch package provides an easy-to-use and memory-friendly way to conditionally render components in React. Using the **Switch**, **Case**, and **CaseElse** components, developers can cleanly and concisely handle different conditions without the need for messy conditionals.
+The react-context-switch package provides an easy-to-use and friendly way to conditionally render components in React.
+Using the **Switch**, **Case**, and **CaseElse** components, you can cleanly handle different conditions avoiding messy conditionals.
+You can see this as a technique wrapped in a component.
 
 ```js
 
@@ -10,7 +12,7 @@ The react-context-switch package provides an easy-to-use and memory-friendly way
   <Case when={expression or value to strictly equal the switch value}>
     <Component to render if the condition is met>
   </Case>
-  <Case when={[function taking switch value as argument and evaluates to true]}>
+  <Case when={[function taking switch value as argument and evaluates boolean]}>
     <Component to render if the condition is met>
   </Case>
   <CaseElse>
@@ -18,12 +20,9 @@ The react-context-switch package provides an easy-to-use and memory-friendly way
   </CaseElse>
 </Switch>
 
-
 ```
 
 ## Installation
-
-To install, simply run the following command:
 
 ```bash
 npm install react-context-switch
@@ -137,6 +136,6 @@ export default App;
 
 Please find an example of a complex conditional render on [codesandbox](https://codesandbox.io/s/react-context-switch-an-example-290kxu?file=/src/styles.css)
 
-I use this component extensively in my projects.
+I use this components extensively in my projects. I hope you'll find them useful too.
 
-This component was inspired from [Mike Talbot's work](https://github.com/miketalbot). Thanks Mike!
+This component was inspired from [Mike Talbot](https://github.com/miketalbot)'s work. Thanks Mike!

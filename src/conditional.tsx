@@ -14,7 +14,7 @@ interface SwitchProps<V> {
 interface CaseProps<V> {
   when: V | ((arg: V) => boolean)[];
   children?: React.ReactNode;
-  execute? : typeof noop;
+  execute?: typeof noop;
 }
 
 const SwitchContext = React.createContext<SwitchContext<unknown>>({
@@ -22,7 +22,10 @@ const SwitchContext = React.createContext<SwitchContext<unknown>>({
   cases: {},
 });
 export function Switch<V>(props: SwitchProps<V>) {
-  const [switchContext] = useState<SwitchContext<V>>({ value: props.value, cases: {} });
+  const [switchContext] = useState<SwitchContext<V>>({
+    value: props.value,
+    cases: {},
+  });
   return (
     <SwitchContext.Provider value={switchContext as SwitchContext<V>}>
       {props.children}
@@ -35,7 +38,7 @@ export function Case<V>(props: CaseProps<V>) {
   const { value, cases } = useContext(SwitchContext);
   const condition = toCheck.some((when_) => {
     if (typeof when_ === "function") {
-      return (when_ as ((arg: V) => boolean)) (value as V);
+      return (when_ as (arg: V) => boolean)(value as V);
     } else {
       return when_ === value;
     }
@@ -44,10 +47,8 @@ export function Case<V>(props: CaseProps<V>) {
     cases[`${props.when}`] = condition;
   }
   if (condition) {
-    props?.execute
-    ? props.execute()
-    : noop();
-    
+    props?.execute ? props.execute() : noop();
+
     return <>{props.children}</>;
   } else {
     return null;
