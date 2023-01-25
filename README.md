@@ -111,7 +111,7 @@ const UserRole = ({ role, level }) => {
 
 As you can see it is also possible to nest Switch components, allowing for even more powerful and flexible conditional rendering.
 
-Please find an example of a complex conditional render on [codesandbox](https://codesandbox.io/s/react-context-switch-an-example-290kxu?file=/src/styles.css)
+Please find an example of a complex conditional render on [codesandbox](https://codesandbox.io/s/react-context-switch-an-example-290kxu)
 
 I use Switch Case CaseElse extensively in my projects. I hope you'll find them useful too.
 
