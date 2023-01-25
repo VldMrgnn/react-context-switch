@@ -115,4 +115,10 @@ Please find an example of a complex conditional render on [codesandbox](https://
 
 I use Switch Case CaseElse extensively in my projects. I hope you'll find them useful too.
 
+## Contributing
+
+Contributions are welcome! Please feel free to open an issue or a pull request. I will try to respond as soon as possible.
+
+## Acknowledgment
+
 This component was inspired from [Mike Talbot](https://github.com/miketalbot)'s work. Thanks Mike!
