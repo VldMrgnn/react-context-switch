@@ -12,12 +12,15 @@ interface SwitchProps<V> {
 }
 
 interface CaseProps<V> {
-  when: V | ((arg: V) => boolean)[];
+  when: V | (V | ((arg: V) => boolean))[];
   children?: React.ReactNode;
   execute?: typeof noop;
 }
+interface ArrayCaseProps<V> extends CaseProps<V> {
+  when: (V | ((arg: V) => boolean))[];
+}
 
-const SwitchContext = React.createContext<SwitchContext<unknown>>({
+const SwitchContext = React.createContext<SwitchContext<any>>({
   value: undefined,
   cases: {},
 });
@@ -32,11 +35,16 @@ export function Switch<V>(props: SwitchProps<V>) {
     </SwitchContext.Provider>
   );
 }
+type TFn = "some" | "every";
 
-export function Case<V>(props: CaseProps<V>) {
+function evaluate<V>(
+  props: CaseProps<V>,
+  value: SwitchProps<V>["value"],
+  cases: SwitchContext<V>["cases"],
+  fn: TFn
+) {
   const toCheck = Array.isArray(props.when) ? props.when : [props.when];
-  const { value, cases } = useContext(SwitchContext);
-  const condition = toCheck.some((when_) => {
+  const condition = (toCheck as Array<V>)[fn]((when_) => {
     if (typeof when_ === "function") {
       return (when_ as (arg: V) => boolean)(value as V);
     } else {
@@ -46,9 +54,32 @@ export function Case<V>(props: CaseProps<V>) {
   if (cases) {
     cases[`${props.when}`] = condition;
   }
-  if (condition) {
+  return condition;
+}
+export function Case<V>(props: CaseProps<V>) {
+  const { value, cases } = useContext(SwitchContext);
+  if (evaluate(props, value, cases, "some")) {
     props?.execute ? props.execute() : noop();
+    return <>{props.children}</>;
+  } else {
+    return null;
+  }
+}
 
+export function CaseSome<V>(props: ArrayCaseProps<V>) {
+  const { value, cases } = useContext(SwitchContext);
+  if (evaluate(props, value, cases, "some")) {
+    props?.execute ? props.execute() : noop();
+    return <>{props.children}</>;
+  } else {
+    return null;
+  }
+}
+
+export function CaseEvery<V>(props: ArrayCaseProps<V>) {
+  const { value, cases } = useContext(SwitchContext);
+  if (evaluate(props, value, cases, "every")) {
+    props?.execute ? props.execute() : noop();
     return <>{props.children}</>;
   } else {
     return null;

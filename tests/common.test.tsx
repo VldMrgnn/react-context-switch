@@ -3,7 +3,7 @@ import { render, screen } from "@testing-library/react";
 
 import "jest-canvas-mock";
 
-import { Switch, Case, CaseElse } from "../src";
+import { Switch, Case, CaseElse, CaseSome, CaseEvery } from "../src";
 
 describe("Startup", () => {
   it("renders without crashing", () => {
@@ -122,5 +122,207 @@ describe("Basic type check", () => {
     );
     const whenArgument = screen.getByTestId("thediv").textContent;
     expect(whenArgument).toBe("this text");
+  });
+});
+
+describe("joined case", () => {
+  it("verifies joined cases", () => {
+    const a = 100 - 99;
+    render(
+      <div>
+        <Switch value={a}>
+          <Case when={1}>
+            <div data-testid="thediv">{"yes way"}</div>
+          </Case>
+          <Case when={2}>
+            <div data-testid="thediv">{"no way"}</div>
+          </Case>
+          <Case when={[1, (x: number) => [1, 2, 3].includes(x)]}>
+            <div data-testid="thediv-fns">{"yes way"}</div>
+          </Case>
+          <Case when={[3, 1001, (x: number) => [2, 3].includes(x)]}>
+            <div data-testid="thediv-fns">{"no way"}</div>
+          </Case>
+          <Case
+            when={[
+              0 + 1,
+              (f: number) => {
+                return !!f;
+              },
+              (x: number) => [x / x, 2, 3].includes(x),
+            ]}
+          >
+            <div data-testid="thediv-val-fns-fns">{"yes way"}</div>
+          </Case>
+          <CaseElse>
+            <div data-testid="thediv">{"no way"}</div>
+          </CaseElse>
+        </Switch>
+      </div>
+    );
+    const whenArgument = screen.getByTestId("thediv").textContent;
+    expect(whenArgument).toBe("yes way");
+    const whenArgument2 = screen.getByTestId("thediv-fns").textContent;
+    expect(whenArgument2).toBe("yes way");
+    const whenArgument3 = screen.getByTestId("thediv-val-fns-fns").textContent;
+    expect(whenArgument3).toBe("yes way");
+  });
+});
+
+describe("CaseElse", () => {
+  it("verifies CaseElse", async () => {
+    const a = 100 - 90;
+    render(
+      <div>
+        <Switch value={a}>
+          <Case when={1}>
+            <div data-testid="thediv">{"yes way"}</div>
+          </Case>
+          <Case when={2}>
+            <div data-testid="thediv">{"no way"}</div>
+          </Case>
+          <Case when={[1, (x: number) => [1, 2, 3].includes(x)]}>
+            <div data-testid="thediv-fns">{"yes way"}</div>
+          </Case>
+          <Case when={[3, 1001, (x: number) => [2, 3].includes(x)]}>
+            <div data-testid="thediv-fns">{"no way"}</div>
+          </Case>
+          <Case
+            when={[
+              0 + 1,
+              (f: number) => {
+                return !f;
+              },
+              (x: number) => [(x / 3) * x, 2, 3].includes(x),
+            ]}
+          >
+            <div data-testid="thediv-val-fns-fns">{"yes way"}</div>
+          </Case>
+          <CaseElse>
+            <div data-testid="the-case-else-div">{"else way"}</div>
+          </CaseElse>
+        </Switch>
+      </div>
+    );
+    const whenArgument = await screen.queryAllByTestId("thediv");
+    expect(whenArgument.length).toBe(0);
+
+    const whenArgument2 = await screen.queryAllByTestId("thediv-fns");
+    expect(whenArgument2.length).toBe(0);
+
+    const whenArgument3 = await screen.queryAllByTestId("thediv-val-fns-fns");
+    expect(whenArgument3.length).toBe(0);
+
+    const whenArgument4 = await screen.getByTestId("the-case-else-div")
+      .textContent;
+    expect(whenArgument4).toBe("else way");
+  });
+  // TODO:
+  // it("verifies CaseElse with Some", async () => {});
+  // it("verifies CaseElse with Every", async () => {});
+});
+describe("Some, Everey", () => {
+  it("verifies SOME", () => {
+    const a = 100 - 99;
+    render(
+      <div>
+        <Switch value={a}>
+          {/* @ts-ignore  -- it should raise typescript error */}
+          <CaseSome when={1}>
+            <div data-testid="thediv">{"yes way"}</div>
+          </CaseSome>
+          <CaseSome when={[1, (x: number) => [1, 2, 3].includes(x)]}>
+            <div data-testid="thediv-fns">{"yes way"}</div>
+          </CaseSome>
+          <CaseSome when={[3, 1001, (x: number) => [2, 3].includes(x)]}>
+            <div data-testid="thediv-fns">{"no way"}</div>
+          </CaseSome>
+          <CaseSome
+            when={[
+              0 + 1,
+              (f: number) => {
+                return !!f;
+              },
+              (x: number) => [x / x, 2, 3].includes(x),
+            ]}
+          >
+            <div data-testid="thediv-val-fns-fns">{"yes way"}</div>
+          </CaseSome>
+          <CaseElse>
+            <div data-testid="thediv">{"no way"}</div>
+          </CaseElse>
+        </Switch>
+      </div>
+    );
+    const whenArgument2 = screen.getByTestId("thediv-fns").textContent;
+    expect(whenArgument2).toBe("yes way");
+    const whenArgument3 = screen.getByTestId("thediv-val-fns-fns").textContent;
+    expect(whenArgument3).toBe("yes way");
+  });
+
+  it("verifies EVERY", () => {
+    const a = 100 - 99;
+    render(
+      <div>
+        <Switch value={a}>
+          {/* @ts-ignore  -- it should raise typescript error */}
+          <CaseEvery when={1}>
+            <div data-testid="thediv">{"yes way"}</div>
+          </CaseEvery>
+          <CaseEvery when={[1, (x: number) => [1, 2, 3].includes(x)]}>
+            <div data-testid="thediv-fns">{"yes way"}</div>
+          </CaseEvery>
+          <CaseEvery when={[3, 1001, (x: number) => [1, 2, 3].includes(x)]}>
+            <div data-testid="thediv-fns-one-2fail-1pass">{"no way"}</div>
+          </CaseEvery>
+          <CaseEvery
+            when={[
+              0 + 1,
+              (f: number) => {
+                return !!f;
+              },
+              (x: number) => [x / x, 2, 3].includes(x),
+            ]}
+          >
+            <div data-testid="thediv-val-fns-fns">{"yes way"}</div>
+          </CaseEvery>
+          <CaseElse>
+            <div data-testid="thediv">{"no way"}</div>
+          </CaseElse>
+        </Switch>
+      </div>
+    );
+    const whenArgument2 = screen.getByTestId("thediv-fns").textContent;
+    expect(whenArgument2).toBe("yes way");
+    const whenArgument3 = screen.getByTestId("thediv-val-fns-fns").textContent;
+    expect(whenArgument3).toBe("yes way");
+    expect(screen.queryAllByTestId("thediv-fns-one-2fail-1pass").length).toBe(
+      0
+    );
+  });
+});
+
+// TODO:
+// describe("Mix cases and default", () => {});
+
+describe("runs a single case as a function", () => {
+  it("runs a single case when as a function", () => {
+    const a = 1;
+    render(
+      <div>
+        <Switch value={a}>
+          <Case when={(x: number) => x === 1}>
+            <div data-testid="thediv">{"yes way"}</div>
+          </Case>
+          <Case when={[1, (x: number) => [1, 2, 3].includes(x)]}>
+            <div data-testid="thediv-fns">{"yes way"}</div>
+          </Case>
+        </Switch>
+      </div>
+    );
+    const whenArgument = screen.getByTestId("thediv").textContent;
+    expect(whenArgument).toBe("yes way");
+    const whenArgument2 = screen.queryByTestId("thediv-fns")?.textContent;
+    expect(whenArgument2).toBe("yes way");
   });
 });

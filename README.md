@@ -2,9 +2,12 @@
 
 ## Description
 
-The react-context-switch package provides an easy-to-use and friendly way to conditionally render components in React.
-Using the **Switch**, **Case**, and **CaseElse** components, you can cleanly handle different conditions avoiding messy conditionals.
-You can see this as a technique wrapped in a component.
+The react-context-switch package provides an easy and friendly way to conditionally render components in React using **Switch**, **Case**, and **CaseElse** components.
+This package allows you to cleanly handle different conditions, avoiding messy conditionals.
+Additionally, there are also **CaseSome** and **CaseEvery**.
+You can think of this package as a technique wrapped in a component.
+
+The simplest syntax is:
 
 ```js
 
@@ -12,7 +15,7 @@ You can see this as a technique wrapped in a component.
   <Case when={expression or value to strictly equal the switch value}>
     <Component to render if the condition is met>
   </Case>
-  <Case when={[function taking switch value as argument and evaluates boolean]}>
+  <Case when={[ a value , a function taking switch value as argument and evaluates boolean, ...]}>
     <Component to render if the condition is met>
   </Case>
   <CaseElse>
@@ -30,11 +33,14 @@ npm install react-context-switch
 
 ## Usage
 
-The _Switch_ component takes a value prop, which is the value to be evaluated.
+| Component | Description | Props | Prop Description | Short Syntax Example |
+| --- | --- | --- | --- | --- |
+| Switch | The parent component that holds the cases and evaluates the expression | value | The expression to be evaluated by the cases | `<Switch value={expression}>` |
+| Case | Renders the children if the when prop matches the value prop of the parent Switch component | when | A value or a function that returns a boolean, compared/called with the value prop of the parent Switch component | `<Case when={expression}>` or `<Case when={[expression1, expression2, ... ]}>`  |
+| CaseSome | Renders the children if at least one of the when prop matches the value prop of the parent Switch component | when | An array of values or functions that returns a boolean, compared/called with the value prop of the parent Switch component | `<CaseSome when={[expression1, expression2, ...]}>` |
+| CaseEvery | Renders the children if all of the when prop matches the value prop of the parent Switch component | when | An array of values or functions that returns a boolean, compared/called with the value prop of the parent Switch component | `<CaseEvery when={[expression1, expression2, ...]}>` |
+| CaseElse | Renders the children if none of the Case, CaseSome and CaseEvery components match the value prop of the parent Switch component | - | - | `<CaseElse>` |
 
-The _Case_ component takes a when prop, which can be either a **value** or a **function** that returns a boolean.
-
-To evaluate a "when" prop as a value, simply pass the value to the when prop.
 
 ```jsx
 let a = 1;
@@ -52,12 +58,13 @@ To evaluate a "when" prop as a function, pass an array containing the function t
 
 ```jsx
 let a=1;
+let b=0;
 //...
  <Switch value={a-1}>
-   <Case when={[(x) => [0,2,4].includes(x)]}>
+   <Case when={[0, b, (x)=> x===b , (x) => [0,2,4].includes(x)]}>
 	  <p>{'a-1 equals one of 0, 2 or 4'}</p>
   </Case>
-
+</Switch>
 ```
 
 The _Case_ component's children will be rendered if the when prop matches the value prop of the parent _Switch_ component.
@@ -67,75 +74,45 @@ The _CaseElse_ component's children will be rendered if none of the _Case_ compo
 Here is an example of usage:
 
 ```jsx
-<Switch value={true}>
-  <Case when={[() => options.includes("DEFAULT_CONTROLS")]}>
-    <DefaultControls />
-  </Case>
-  <Case when={[() => options.includes("YEAR_PICKER")]}>
-    <Calendar />
-  </Case>
-  <Case when={[() => options.includes("SHOW_BOOKMARK")]}>
-    <div>
-      <i className="icon-bookmark" />
-    </div>
-  </Case>
-  <CaseElse>
-    <FallbackComponent />
-  </CaseElse>
-</Switch>
-```
+import { Switch, Case, CaseElse, CaseEvery } from 'react-context-switch';
 
-It is also possible to nest Switch components, allowing for even more powerful and flexible conditional rendering.
-
-```jsx
-import React from "react";
-import { Switch, Case, CaseElse } from "react-context-switch";
-
-function App() {
+const UserRole = ({ role, level }) => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <Switch value={new Date().getFullYear()}>
-          <Case when={2023}>
-            <p>2023</p>
-          </Case>
-          <Case when={[(x) => x === 2024]}>
-            <p>2024</p>
-          </Case>
-          <CaseElse>
-            <Switch value={~~(new Date().getFullYear() / 100)}>
-              <Case when={20}>
-                <NearFutureComponent />
-              </Case>
-              <Case when={(x) => [21, 22].includes(x)}>
-                <FutureComponent />
-              </Case>
-              <CaseElse>
-                <DistantFutureComponent />
-              </CaseElse>
-            </Switch>
-          </CaseElse>
-        </Switch>
-      </header>
-    </div>
-  );
+    <Switch value={role}>
+      <Case when={'admin'}>
+        <AdminDashboard />
+      </Case>
+      <Case when={'moderator'}>
+        <ModeratorDashboard />
+      </Case>
+      <Case when={'user'}>
+          <Switch value={member_since}>
+            <Case when={[(x) => x>0 && x<=3 ]}>
+              <EntryDashboard>
+            </Case>
+            <Case when={[(x) => x>3 && x<=6 ]}>
+              <IntermediateDashboard />
+            <CaseElse>
+              <SeniorDashboard />
+            </CaseElse>
+          </Switch>
+      </Case>
+      <CaseSome when={['admin', 'moderator']}>
+        <TrafficModule/>
+      </CaseSome>
+      <CaseElse>
+        <p>You do not have access to any dashboard.</p>
+      </CaseElse>
+    </Switch>
+  )
 }
 
-function NearFutureComponent() {
-  return <div>{"The Near Future is here!"}</div>;
-}
-function FutureComponent() {
-  return <div>{"The Future is here!"}</div>;
-}
-function DistantFutureComponent() {
-  return <div>{"The Distant Future is here!"}</div>;
-}
-
-export default App;
 ```
+
+As you can see it is also possible to nest Switch components, allowing for even more powerful and flexible conditional rendering.
 
 Please find an example of a complex conditional render on [codesandbox](https://codesandbox.io/s/react-context-switch-an-example-290kxu?file=/src/styles.css)
 
-I use this components extensively in my projects. I hope you'll find them useful too.
+I use Switch Case CaseElse extensively in my projects. I hope you'll find them useful too.
 
 This component was inspired from [Mike Talbot](https://github.com/miketalbot)'s work. Thanks Mike!
