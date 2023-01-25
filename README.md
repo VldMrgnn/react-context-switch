@@ -37,10 +37,10 @@ npm install react-context-switch
 | --- | --- | --- | --- | --- |
 | Switch | The parent component that holds the cases and evaluates the expression | value | The expression to be evaluated by the cases | `<Switch value={expression}>` |
 | Case | Renders the children if the when prop matches the value prop of the parent Switch component | when | A value or a function that returns a boolean, compared/called with the value prop of the parent Switch component | `<Case when={expression}>` or `<Case when={[expression1, expression2, ... ]}>`  |
+| CaseElse | Renders the children if none of the Case, CaseSome and CaseEvery components match the value prop of the parent Switch component | - | - | `<CaseElse>` |
+|| ...or more specialized:   |  |  |  |
 | CaseSome | Renders the children if at least one of the when prop matches the value prop of the parent Switch component | when | An array of values or functions that returns a boolean, compared/called with the value prop of the parent Switch component | `<CaseSome when={[expression1, expression2, ...]}>` |
 | CaseEvery | Renders the children if all of the when prop matches the value prop of the parent Switch component | when | An array of values or functions that returns a boolean, compared/called with the value prop of the parent Switch component | `<CaseEvery when={[expression1, expression2, ...]}>` |
-| CaseElse | Renders the children if none of the Case, CaseSome and CaseEvery components match the value prop of the parent Switch component | - | - | `<CaseElse>` |
-
 
 ```jsx
 let a = 1;
