@@ -24,8 +24,6 @@ interface ArrayCaseProps<V> extends CaseProps<V> {
   when: (V | ((arg: V) => boolean))[];
 }
 
-type TFn = "some" | "every";
-
 const SwitchContext = React.createContext<SwitchContext<any>>({
   value: undefined,
   cases: {},
@@ -42,28 +40,20 @@ export function Switch<V>(props: SwitchProps<V>) {
   );
 }
 
-function evaluate<V>(
-  props: CaseProps<V>,
-  value: SwitchValue<V>,
-  cases: SwitchContext<V>["cases"],
-  fn: TFn
-) {
+export function Case<V>(props: CaseProps<V>) {
+  const { value, cases } = useContext(SwitchContext);
   const toCheck = Array.isArray(props.when) ? props.when : [props.when];
-  const condition = (toCheck as Array<V>)[fn]((when_) => {
+  const condition = (toCheck as Array<V>).some((when_) => {
     if (typeof when_ === "function") {
-      return (when_ as (arg: V) => boolean)(value as V);
+      return when_(value as V);
     } else {
       return when_ === value;
     }
   });
-  if (cases) {
-    cases[`${props.when}`] = condition;
-  }
-  return condition;
-}
-export function Case<V>(props: CaseProps<V>) {
-  const { value, cases } = useContext(SwitchContext);
-  if (evaluate(props, value, cases, "some")) {
+
+  if (cases) cases[`${props.when}`] = condition;
+
+  if (condition) {
     props?.execute ? props.execute() : noop();
     return <>{props.children}</>;
   } else {
@@ -73,7 +63,18 @@ export function Case<V>(props: CaseProps<V>) {
 
 export function CaseSome<V>(props: ArrayCaseProps<V>) {
   const { value, cases } = useContext(SwitchContext);
-  if (evaluate(props, value, cases, "some")) {
+  const toCheck = Array.isArray(props.when) ? props.when : [props.when];
+  const condition = (toCheck as Array<V>).some((when_) => {
+    if (typeof when_ === "function") {
+      return when_(value as V);
+    } else {
+      return when_ === value;
+    }
+  });
+
+  if (cases) cases[`${props.when}`] = condition;
+
+  if (condition) {
     props?.execute ? props.execute() : noop();
     return <>{props.children}</>;
   } else {
@@ -83,7 +84,18 @@ export function CaseSome<V>(props: ArrayCaseProps<V>) {
 
 export function CaseEvery<V>(props: ArrayCaseProps<V>) {
   const { value, cases } = useContext(SwitchContext);
-  if (evaluate(props, value, cases, "every")) {
+  const toCheck = Array.isArray(props.when) ? props.when : [props.when];
+  const condition = (toCheck as Array<V>).every((when_) => {
+    if (typeof when_ === "function") {
+      return when_(value as V);
+    } else {
+      return when_ === value;
+    }
+  });
+
+  if (cases) cases[`${props.when}`] = condition;
+
+  if (condition) {
     props?.execute ? props.execute() : noop();
     return <>{props.children}</>;
   } else {
