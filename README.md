@@ -141,3 +141,4 @@ I think that a better typing can be achieved. I am not a TypeScript expert, so I
 ## Acknowledgment
 
 This component was inspired from [Mike Talbot](https://github.com/miketalbot)'s work.
+
