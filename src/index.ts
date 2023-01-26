@@ -1,1 +1,1 @@
-export { Switch, Case, CaseElse } from "./conditional";
+export { Switch, Case, CaseSome, CaseEvery, CaseElse } from "./conditional";
