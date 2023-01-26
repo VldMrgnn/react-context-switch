@@ -311,7 +311,7 @@ describe("runs a single case as a function", () => {
     render(
       <div>
         <Switch value={a}>
-          <Case when={(x: number) => x === 1}>
+          <Case when={(x) => x === 1}>
             <div data-testid="thediv">{"yes way"}</div>
           </Case>
           <Case when={[1, (x: number) => [1, 2, 3].includes(x)]}>

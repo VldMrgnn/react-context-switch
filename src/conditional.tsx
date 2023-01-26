@@ -7,18 +7,24 @@ interface SwitchContext<T> {
   children?: React.ReactNode;
 }
 interface SwitchProps<V> {
-  value: V;
+  value: SwitchContext<V>["value"];
   children: React.ReactNode;
 }
+type SwitchValue<V> = SwitchProps<V>["value"];
 
 interface CaseProps<V> {
-  when: V | (V | ((arg: V) => boolean))[];
+  when:
+    | SwitchValue<V>
+    | ((arg: SwitchValue<V>) => boolean)
+    | (SwitchValue<V> | ((arg: SwitchValue<V>) => boolean))[];
   children?: React.ReactNode;
   execute?: typeof noop;
 }
 interface ArrayCaseProps<V> extends CaseProps<V> {
   when: (V | ((arg: V) => boolean))[];
 }
+
+type TFn = "some" | "every";
 
 const SwitchContext = React.createContext<SwitchContext<any>>({
   value: undefined,
@@ -35,11 +41,10 @@ export function Switch<V>(props: SwitchProps<V>) {
     </SwitchContext.Provider>
   );
 }
-type TFn = "some" | "every";
 
 function evaluate<V>(
   props: CaseProps<V>,
-  value: SwitchProps<V>["value"],
+  value: SwitchValue<V>,
   cases: SwitchContext<V>["cases"],
   fn: TFn
 ) {
