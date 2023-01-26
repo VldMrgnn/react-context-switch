@@ -1,5 +1,10 @@
 # React Conditional Render SwitchCase using Context
 
+## Important
+
+Please install and run the latest published version of this package from [npm](https://www.npmjs.com/package/react-context-switch?activeTab=readme).
+In this repository you may find some work in progress too.
+
 ## Description
 
 The react-context-switch package provides an easy and friendly way to conditionally render components in React using **Switch**, **Case**, and **CaseElse** components.
