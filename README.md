@@ -44,15 +44,15 @@ About "when" prop:
 
 1. When multiple conditions have to be checked, then an array of values or functions should be passed to the "when" prop of the **Case**, **CaseSome** or **CaseEvery** component. They will be destructured and evaluated one by one.
 
-   ``` <Case when=[e,f,...]> ```
+   ```<Case when=[e,f,...]>```
 
 2. If you want to check a single condition, then passing an array to the "when" prop of the **Case** component is optional. Just evaluate the condition directly.
 
-    ```<Case when ={e}>``` is the same as ```jsx <Case when={[e]}>```
+    ```<Case when ={e}>``` is the same as ```<Case when={[e]}>```
 
 3. **Case** accepts both a single expression or an array of expressions.
 
-    ```<Case when ={e}>``` or ```jsx <Case when=[e,f,...]>```.
+    ```<Case when ={e}>``` or ```<Case when=[e,f,...]>```.
 
 4. **CaseSome** and **CaseEvery** are accepting only an array of values or functions
 
