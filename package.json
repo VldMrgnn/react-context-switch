@@ -1,6 +1,6 @@
 {
   "name": "react-context-switch",
-  "version": "0.0.28",
+  "version": "0.1.2",
   "description": "Simple conditional react render switch using context",
   "repository": "https://github.com/VldMrgnn/react-context-switch.git",
   "author": "Vlad Marginean <vladmarginean@softwiz.ro>",

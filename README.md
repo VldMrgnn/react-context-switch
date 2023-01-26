@@ -2,6 +2,8 @@
 
 ## Description
 
+I am preparing a better distribution of this package. Please use the version 0.1.2 for now.
+
 The react-context-switch package provides an easy-to-use and memory-friendly way to conditionally render components in React. Using the **Switch**, **Case**, and **CaseElse** components, developers can cleanly and concisely handle different conditions without the need for messy conditionals.
 
 ```js
