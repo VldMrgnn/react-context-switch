@@ -347,41 +347,53 @@ describe("Some, Every", () => {
   });
 });
 
-
 describe("Mix cases and default", () => {
-  const Stack = ({ idx}:{idx:number}) => {
-    const name = ["Abramburique", "John Lenon", "Paul McCartney", "George Harrison", "Ringo Star"];
+  const Stack = ({ idx }: { idx: number }) => {
+    const name = [
+      "Abramburique",
+      "John Lenon",
+      "Paul McCartney",
+      "George Harrison",
+      "Ringo Star",
+    ];
     return (
       <div>
         <Switch value={name?.[idx] || "xxx"}>
           <CaseEvery
             when={[
               (x: string) => x?.toUpperCase().includes("A"),
-              (x: string) => x?.toUpperCase().includes("B")
+              (x: string) => x?.toUpperCase().includes("B"),
             ]}
           >
-            <div data-testid={'both'}>{`${name?.[idx]} includes BOTH letters A/a and B/b`}</div>
+            <div
+              data-testid={"both"}
+            >{`${name?.[idx]} includes BOTH letters A/a and B/b`}</div>
           </CaseEvery>
           <CaseSome
             when={[
               (x: string) => x?.toUpperCase().includes("A"),
-              (x: string) => x?.toUpperCase().includes("B")
+              (x: string) => x?.toUpperCase().includes("B"),
             ]}
           >
-            <div data-testid={'some'}>{`${name?.[idx]} includes EITHER letters A/a or B/b`}</div>
+            <div
+              data-testid={"some"}
+            >{`${name?.[idx]} includes EITHER letters A/a or B/b`}</div>
           </CaseSome>
           <CaseElse>
-            <div data-testid={'none'}>{`${name?.[idx]} does not include letters A/a or B/b`}</div>
+            <div
+              data-testid={"none"}
+            >{`${name?.[idx]} does not include letters A/a or B/b`}</div>
           </CaseElse>
         </Switch>
-      </div>)
-  }
-      //test matching letters a and b
-    // 0 both
-    // 1 none
-    // 2 some
-    // 3 some
-    // 4 some
+      </div>
+    );
+  };
+  //test matching letters a and b
+  // 0 both
+  // 1 none
+  // 2 some
+  // 3 some
+  // 4 some
   it("runs Some Every Else 0", () => {
     const { rerender } = render(<Stack idx={0} />);
     expect(rerender.bind(rerender, <Stack idx={0} />)).not.toThrow();
@@ -397,7 +409,7 @@ describe("Mix cases and default", () => {
     expect(screen.queryAllByTestId("some").length).toBe(0);
     expect(screen.queryAllByTestId("none").length).toBe(1);
   });
-  
+
   it("runs Some Every Else 2", () => {
     const { rerender } = render(<Stack idx={2} />);
     expect(rerender.bind(rerender, <Stack idx={2} />)).not.toThrow();
@@ -429,4 +441,3 @@ describe("A simple case for testing", () => {
     expect(whenArgument2).toBe("yes way");
   });
 });
-
