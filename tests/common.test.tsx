@@ -27,7 +27,7 @@ describe("Startup", () => {
 });
 
 describe("Basic type check", () => {
-  it("inferes the type ", () => {
+  it("infers the type ", () => {
     const a = 1;
     render(
       <div>
@@ -125,7 +125,7 @@ describe("Basic type check", () => {
   });
 });
 
-describe("joined case", () => {
+describe("Joined Cases", () => {
   it("verifies joined cases", () => {
     const a = 100 - 99;
     render(
@@ -221,7 +221,7 @@ describe("CaseElse", () => {
   // it("verifies CaseElse with Some", async () => {});
   // it("verifies CaseElse with Every", async () => {});
 });
-describe("Some, Everey", () => {
+describe("Some, Every", () => {
   it("verifies SOME", () => {
     const a = 100 - 99;
     render(
@@ -347,10 +347,67 @@ describe("Some, Everey", () => {
   });
 });
 
-// TODO:
-// describe("Mix cases and default", () => {});
 
-describe("runs a single case as a function", () => {
+describe("Mix cases and default", () => {
+  const Stack = ({ idx}:{idx:number}) => {
+    const name = ["Abramburique", "John Lenon", "Paul McCartney", "George Harrison", "Ringo Star"];
+    return (
+      <div>
+        <Switch value={name?.[idx] || "xxx"}>
+          <CaseEvery
+            when={[
+              (x: string) => x?.toUpperCase().includes("A"),
+              (x: string) => x?.toUpperCase().includes("B")
+            ]}
+          >
+            <div data-testid={'both'}>{`${name?.[idx]} includes BOTH letters A/a and B/b`}</div>
+          </CaseEvery>
+          <CaseSome
+            when={[
+              (x: string) => x?.toUpperCase().includes("A"),
+              (x: string) => x?.toUpperCase().includes("B")
+            ]}
+          >
+            <div data-testid={'some'}>{`${name?.[idx]} includes EITHER letters A/a or B/b`}</div>
+          </CaseSome>
+          <CaseElse>
+            <div data-testid={'none'}>{`${name?.[idx]} does not include letters A/a or B/b`}</div>
+          </CaseElse>
+        </Switch>
+      </div>)
+  }
+      //test matching letters a and b
+    // 0 both
+    // 1 none
+    // 2 some
+    // 3 some
+    // 4 some
+  it("runs Some Every Else 0", () => {
+    const { rerender } = render(<Stack idx={0} />);
+    expect(rerender.bind(rerender, <Stack idx={0} />)).not.toThrow();
+    expect(screen.queryAllByTestId("both").length).toBe(1);
+    expect(screen.queryAllByTestId("some").length).toBe(1);
+    expect(screen.queryAllByTestId("none").length).toBe(0);
+  });
+
+  it("runs Some Every Else 1", () => {
+    const { rerender } = render(<Stack idx={1} />);
+    expect(rerender.bind(rerender, <Stack idx={1} />)).not.toThrow();
+    expect(screen.queryAllByTestId("both").length).toBe(0);
+    expect(screen.queryAllByTestId("some").length).toBe(0);
+    expect(screen.queryAllByTestId("none").length).toBe(1);
+  });
+  
+  it("runs Some Every Else 2", () => {
+    const { rerender } = render(<Stack idx={2} />);
+    expect(rerender.bind(rerender, <Stack idx={2} />)).not.toThrow();
+    expect(screen.queryAllByTestId("both").length).toBe(0);
+    expect(screen.queryAllByTestId("some").length).toBe(1);
+    expect(screen.queryAllByTestId("none").length).toBe(0);
+  });
+});
+
+describe("A simple case for testing", () => {
   it("runs a single case when as a function", () => {
     const a = 1;
     render(
@@ -372,3 +429,4 @@ describe("runs a single case as a function", () => {
     expect(whenArgument2).toBe("yes way");
   });
 });
+
