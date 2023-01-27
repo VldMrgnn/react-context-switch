@@ -35,7 +35,7 @@ describe("Basic type check", () => {
           <Case when={1}>
             <div>{"a eq 2"}</div>
           </Case>
-          <Case when={[(x) => x === 0]}>
+          <Case when={[(x: number) => x === 0]}>
             <div>{"a eq 1"}</div>
           </Case>
           <Case when={[(x: string) => x === "abracadabra"]}>
@@ -75,7 +75,7 @@ describe("Single case short tests", () => {
     render(
       <div>
         <Switch value={a}>
-          <Case when={[(x) => x === "A".toLowerCase()]}>
+          <Case when={[(x: string) => x === "A".toLowerCase()]}>
             <div data-testid="test-div">{"ok"}</div>T
           </Case>
         </Switch>
@@ -231,7 +231,14 @@ describe("Some, Everey", () => {
           <CaseSome when={1}>
             <div data-testid="thediv">{"yes way"}</div>
           </CaseSome>
-          <CaseSome when={[1, (x: number) => [1, 2, 3].includes(x)]}>
+          <CaseSome
+            when={[
+              1,
+              (x: number) => {
+                return [1, 2, 3].includes(x);
+              },
+            ]}
+          >
             <div data-testid="thediv-fns">{"yes way"}</div>
           </CaseSome>
           <CaseSome when={[3, 1001, (x: number) => [2, 3].includes(x)]}>
@@ -300,6 +307,44 @@ describe("Some, Everey", () => {
       0
     );
   });
+  it("test other types", () => {
+    const a = { a: 1, b: 2 };
+    render(
+      <div>
+        <Switch value={a}>
+          <CaseSome
+            when={[
+              (x: typeof a) => {
+                const zzz = JSON.stringify({ a: 1, b: 2 });
+                const yyy = JSON.stringify(x);
+                return zzz === yyy;
+              },
+              (x: any) => {
+                return x.a === 1;
+              },
+            ]}
+          >
+            <div data-testid="thediv">{"yes way"}</div>
+          </CaseSome>
+          <Case when={{ a: 1, b: 2, c: 3 }}>
+            <div data-testid="thediv-fns">{"no way"}</div>
+          </Case>
+          <Case when={{ a: 1, b: 2, c: 3, d: 4 }}>
+            <div data-testid="thediv-fns-one-2fail-1pass">{"no way"}</div>
+          </Case>
+          <CaseElse>
+            <div data-testid="thediv">{"no way"}</div>
+          </CaseElse>
+        </Switch>
+      </div>
+    );
+    const whenArgument2 = screen.getByTestId("thediv").textContent;
+    expect(whenArgument2).toBe("yes way");
+    expect(screen.queryAllByTestId("thediv-fns").length).toBe(0);
+    expect(screen.queryAllByTestId("thediv-fns-one-2fail-1pass").length).toBe(
+      0
+    );
+  });
 });
 
 // TODO:
@@ -310,11 +355,12 @@ describe("runs a single case as a function", () => {
     const a = 1;
     render(
       <div>
-        <Switch value={a}>
+        <Switch value={a as number}>
+          {/* still doesn't infer x as number */}
           <Case when={(x) => x === 1}>
             <div data-testid="thediv">{"yes way"}</div>
           </Case>
-          <Case when={[1, (x: number) => [1, 2, 3].includes(x)]}>
+          <Case when={[1, (x: any) => [1, 2, 3].includes(x)]}>
             <div data-testid="thediv-fns">{"yes way"}</div>
           </Case>
         </Switch>
