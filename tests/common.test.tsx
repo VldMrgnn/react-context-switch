@@ -357,7 +357,7 @@ describe("runs a single case as a function", () => {
       <div>
         <Switch value={a as number}>
           {/* still doesn't infer x as number */}
-          <Case when={(x:any) => x === 1}>
+          <Case when={(x: any) => x === 1}>
             <div data-testid="thediv">{"yes way"}</div>
           </Case>
           <Case when={[1, (x: any) => [1, 2, 3].includes(x)]}>
