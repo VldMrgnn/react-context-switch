@@ -20,7 +20,7 @@ interface CaseProps<T> {
     : T extends (x: infer U) => any
     ? (x: U) => boolean
     : T;
-
+  mounted?: boolean;
   children?: React.ReactNode;
   execute?: typeof noop;
 }
@@ -79,11 +79,14 @@ export function Case<T>(props: CaseProps<T>): React.ReactElement | null {
   const { value, cases } = useContext(SwitchContext);
   const condition = evaluate(props, "some", value);
   if (cases) cases[`${props.when}`] = condition;
-
+  
   if (condition) {
     props?.execute ? props.execute() : noop();
-    return <>{props.children}</>;
+    return  <>{props.children}</>;
   } else {
+    if (props.mounted) {
+       return <div style={{display: 'none'}}>{props.children}</div>;
+    }
     return null;
   }
 }
