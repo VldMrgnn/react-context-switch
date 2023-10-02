@@ -138,10 +138,6 @@ Please find an example of a complex conditional render on [codesandbox](https://
 
 I use **Switch** **Case** **CaseElse** extensively in my projects. I hope you'll find them useful too.
 
-## Contributing
-
-I think that a better typing can be achieved. I am not a TypeScript expert, so I would appreciate any help in this regard. Please feel free to open an issue or a pull request. I will try to respond as soon as possible.
-
 ## Acknowledgment
 
 This component was inspired from [Mike Talbot](https://github.com/miketalbot)'s work.
