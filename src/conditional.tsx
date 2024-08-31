@@ -3,7 +3,6 @@ import React, { useContext, useMemo } from "react";
 // eslint-disable-next-line @typescript-eslint/no-empty-function
 export const noop = () => {};
 
-// Define context and props interfaces.
 interface SwitchContextType<T> {
   value: T;
   cases?: Record<string, boolean>;
