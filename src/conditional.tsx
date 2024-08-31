@@ -1,6 +1,6 @@
 import React, { useContext, useMemo } from "react";
 
-// A no-operation function that can be reused.
+// eslint-disable-next-line @typescript-eslint/no-empty-function
 export const noop = () => {};
 
 // Define context and props interfaces.
@@ -23,14 +23,12 @@ interface CaseProps<T> {
 
 type TEvalName = "some" | "every";
 
-// Context creation with an initial value.
 const SwitchContext = React.createContext<SwitchContextType<any>>({
   value: undefined,
   cases: {},
 });
 
 export function Switch<T>({ value, children }: SwitchProps<T>) {
-  // Memoize context value to prevent unnecessary renders.
   const contextValue = useMemo(() => ({ value, cases: {} }), [value]);
 
   return (
@@ -40,11 +38,9 @@ export function Switch<T>({ value, children }: SwitchProps<T>) {
   );
 }
 
-// Helper function to evaluate the case.
 function evaluate<T>(props: CaseProps<T>, fn: TEvalName, value: T): boolean {
   const { when } = props;
 
-  // Create an array of conditions to evaluate.
   const conditions = Array.isArray(when) ? when : [when];
 
   return conditions[fn]((condition) =>
@@ -58,7 +54,6 @@ export function Case<T>(props: CaseProps<T>): React.ReactElement | null {
   const { value, cases } = useContext(SwitchContext);
   const condition = evaluate(props, "some", value);
 
-  // Store the evaluation result in the context's cases object.
   if (cases) cases[String(props.when)] = condition;
 
   if (condition) {
@@ -71,7 +66,6 @@ export function Case<T>(props: CaseProps<T>): React.ReactElement | null {
   ) : null;
 }
 
-// Helper function for CaseSome and CaseEvery components.
 function createCaseComponent<T>(evalType: TEvalName) {
   return function CaseComponent(
     props: CaseProps<T>
@@ -90,7 +84,6 @@ function createCaseComponent<T>(evalType: TEvalName) {
   };
 }
 
-// Create specialized case components for "some" and "every".
 export const CaseSome = createCaseComponent("some");
 export const CaseEvery = createCaseComponent("every");
 
