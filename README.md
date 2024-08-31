@@ -138,6 +138,4 @@ Please find an example of a complex conditional render on [codesandbox](https://
 
 I use **Switch** **Case** **CaseElse** extensively in my projects. I hope you'll find them useful too.
 
-## Acknowledgment
-
 This component was inspired from [Mike Talbot](https://github.com/miketalbot)'s work.
