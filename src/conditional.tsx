@@ -1,126 +1,94 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useMemo } from "react";
+
 // eslint-disable-next-line @typescript-eslint/no-empty-function
 export const noop = () => {};
 
-interface SwitchContext<T> {
+interface SwitchContextType<T> {
   value: T;
-  cases?: { [key: string]: boolean };
-  children?: React.ReactNode;
+  cases?: Record<string, boolean>;
 }
+
 interface SwitchProps<T> {
-  value: SwitchContext<T>["value"] | never;
+  value: T;
   children: React.ReactNode;
-  valueType: T;
 }
+
 interface CaseProps<T> {
-  when: T extends any[]
-    ? T extends (x: infer U) => any
-      ? (x: U) => boolean
-      : T
-    : T extends (x: infer U) => any
-    ? (x: U) => boolean
-    : T;
+  when: T | ((value: T) => boolean);
   mounted?: boolean;
   children?: React.ReactNode;
-  execute?: typeof noop;
+  execute?: () => void;
 }
-interface ArrayCaseProps<T> {
-  when: T extends any[]
-    ? T extends (x: infer U) => any
-      ? (x: U) => boolean
-      : T
-    : never;
 
-  children?: React.ReactNode;
-  execute?: typeof noop;
-}
 type TEvalName = "some" | "every";
 
-const SwitchContext = React.createContext({} as SwitchContext<any>);
+const SwitchContext = React.createContext<SwitchContextType<any>>({
+  value: undefined,
+  cases: {},
+});
 
-export function Switch<T, C>({
-  value,
-  children,
-}: {
-  value: SwitchProps<T>["value"];
-  children: SwitchProps<C>["children"];
-}) {
-  const [switchContext] = useState({ cases: {}, value });
-  switchContext.value = value;
+export function Switch<T>({ value, children }: SwitchProps<T>) {
+  const contextValue = useMemo(() => ({ value, cases: {} }), [value]);
+
   return (
-    <SwitchContext.Provider value={switchContext}>
+    <SwitchContext.Provider value={contextValue}>
       {children}
     </SwitchContext.Provider>
   );
 }
-function evaluate<T>(
-  props: CaseProps<T> | ArrayCaseProps<T>,
-  fn: TEvalName,
-  value: SwitchContext<T>["value"]
-) {
-  type TValue = typeof value;
-  const toCheck = (
-    Array.isArray(props.when)
-      ? props.when
-      : [props.when].filter((x) => x !== undefined)
-  ) as (TValue | ((arg?: TValue) => boolean))[];
 
-  return toCheck[fn]((when) => {
-    if (typeof when === "function") {
-      const fnw = when as (arg?: TValue) => boolean;
-      return fnw(value as TValue);
-    } else {
-      const fnw = when as TValue;
-      return fnw === value;
-    }
-  });
+function evaluate<T>(props: CaseProps<T>, fn: TEvalName, value: T): boolean {
+  const { when } = props;
+
+  const conditions = Array.isArray(when) ? when : [when];
+
+  return conditions[fn]((condition) =>
+    typeof condition === "function"
+      ? (condition as (value: T) => boolean)(value)
+      : condition === value
+  );
 }
+
 export function Case<T>(props: CaseProps<T>): React.ReactElement | null {
   const { value, cases } = useContext(SwitchContext);
   const condition = evaluate(props, "some", value);
-  if (cases) cases[`${props.when}`] = condition;
-  
+
+  if (cases) cases[String(props.when)] = condition;
+
   if (condition) {
-    props?.execute ? props.execute() : noop();
-    return  <>{props.children}</>;
-  } else {
-    if (props.mounted) {
-       return <div style={{display: 'none'}}>{props.children}</div>;
+    props.execute?.();
+    return <>{props.children}</>;
+  }
+
+  return props.mounted ? (
+    <div style={{ display: "none" }}>{props.children}</div>
+  ) : null;
+}
+
+function createCaseComponent<T>(evalType: TEvalName) {
+  return function CaseComponent(
+    props: CaseProps<T>
+  ): React.ReactElement | null {
+    const { value, cases } = useContext(SwitchContext);
+    const condition = evaluate(props, evalType, value);
+
+    if (cases) cases[String(props.when)] = condition;
+
+    if (condition) {
+      props.execute?.();
+      return <>{props.children}</>;
     }
+
     return null;
-  }
+  };
 }
 
-export function CaseSome<T>(props: ArrayCaseProps<T>) {
-  const { value, cases } = useContext(SwitchContext);
-  const condition = evaluate(props, "some", value);
-  if (cases) cases[`${props.when}`] = condition;
-
-  if (condition) {
-    props?.execute ? props.execute() : noop();
-    return <>{props.children}</>;
-  } else {
-    return null;
-  }
-}
-
-export function CaseEvery<T>(props: ArrayCaseProps<T>) {
-  const { value, cases } = useContext(SwitchContext);
-  const condition = evaluate(props, "every", value);
-  if (cases) cases[`${props.when}`] = condition;
-
-  if (condition) {
-    props?.execute ? props.execute() : noop();
-    return <>{props.children}</>;
-  } else {
-    return null;
-  }
-}
+export const CaseSome = createCaseComponent("some");
+export const CaseEvery = createCaseComponent("every");
 
 export function CaseElse({ children }: { children: React.ReactNode }) {
   const { cases } = useContext(SwitchContext);
-  if (!Object.values(cases || []).some((v) => !!v)) {
-    return <>{children}</>;
-  }
-  return null;
+  const isAnyCaseMatched = Object.values(cases || {}).some(Boolean);
+
+  return !isAnyCaseMatched ? <>{children}</> : null;
 }

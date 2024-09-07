@@ -1,9 +1,9 @@
+import "jest-canvas-mock";
 import * as React from "react";
+
 import { render, screen } from "@testing-library/react";
 
-import "jest-canvas-mock";
-
-import { Switch, Case, CaseElse, CaseSome, CaseEvery } from "../src";
+import { Case, CaseElse, CaseEvery, CaseSome, Switch } from "../src";
 
 describe("Startup", () => {
   it("renders without crashing", () => {
